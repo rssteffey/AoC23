@@ -3,6 +3,10 @@
 
 I've never done Elixir before, so this felt like a good time to start
 
+## Additional Notes
+
+Due to never doing Elixir, I don't have great sense of what good practices or formatting are yet.  Go look at [Jamin](https://github.com/jaminthorns/advent-of-code-2023/tree/main) if you want that real good terse stuff
+
 ## Journal of Shawn's daily feelings on the matter
 
 - Day 1 - Learning curve, but doable
