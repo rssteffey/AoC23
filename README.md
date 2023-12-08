@@ -24,3 +24,14 @@ Due to never doing Elixir, I don't have great sense of what good practices or fo
     - Blissfully simple. Part 2 just required swapping out one pipe. (I should have just made a second spaceless input file manually)
 - Day 7
     - Super fun, and I'm finally starting to get better structures and organization. Also very encouraging to feel a lot of the flows that were tripping me up before (reducing, maps, etc) have now started feeling secondhand and I don't have to think much about them.  This was a great easy problem for me to dip my toe into sorting.  Not using a comparator is weird, but I don't hate precalculating the rank values and just letting it go from there
+- Day 8
+    - The first day I feel good at Elixir because it was my reading comprehension that screwed me, not the language.  Part 1 took me an hour and a half because I interpreted the input data instructions as "First row = starting point" and that just happened to be "AAA" in the test data.  15 minutes coding everything, follow by an hour+ debugging and verifying that I was definitely in a closed cycle with no end before it finally clicked.  (I maintain the puzzle is misleadingly worded, even if the final direction is clear)  
+    - Weirdly Part 2 was a much quicker 20-minute push.  I think I got lucky with my assumption that each cycle closed immediately after Z back to A, because I just blindly counted the Least Common Multiple of all routes A->Z and threw it in AoC on a whim to a surprised second star.  I just now validated that at least some of my A's never have a link back, so I suspect the input generator is benevolent and purposely generating lead-in-paths that are the same length as the extra bits of main cycles afterwards.  I _should_ have counted only the Z to Z cycle; ie, length of A to X was designed to match Z to X in the diagram below? 
+
+    ```
+    A---X---\
+       /     |
+       \__Z_/
+    ```
+
+    (That much benevolence in design feels wrong, so that may just be my sleep deprived brain misunderstanding how I got it right the first time)
