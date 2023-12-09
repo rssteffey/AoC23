@@ -77,9 +77,7 @@ dirMap = directions
 |> String.split("", trim: true)
 
 startNodes = nodes
-|> Enum.filter(fn x -> Part2.startsWithZ(String.reverse(elem(x, 0))) end)
-
-IO.inspect(startNodes)
+|> Enum.filter(fn x -> Part2.startsWithA(String.reverse(elem(x, 0))) end)
 
 numerators = startNodes
 |> Enum.map(fn x -> Part2.countToZ(dirMap, elem(x, 1), nodeMap, 0, dirMap) end)
