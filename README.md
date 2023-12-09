@@ -35,3 +35,5 @@ Due to never doing Elixir, I don't have great sense of what good practices or fo
     ```
 
     (That much benevolence in design feels wrong, so that may just be my sleep deprived brain misunderstanding how I got it right the first time)
+- Day 9
+    - Recursion is fn
