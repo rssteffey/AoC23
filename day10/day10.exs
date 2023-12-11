@@ -133,33 +133,13 @@ defmodule Part2 do
     # sequential corner pairs can be irrelevant, or act as a "|"; see countCornerPair() for better explanation
     cond do
       rest == [] -> mainAcc
-      # Corner Case (subroutine)
-      head == "F" or head == "L" ->
-        {equivalentPipe, remainingRow} = countCornerPair(head, rest)
-        cond do
-          equivalentPipe and pairOpen -> calcSpaceWithinRow(remainingRow, mainAcc + subAcc, 0, false)
-          equivalentPipe and !pairOpen -> calcSpaceWithinRow(remainingRow, mainAcc, subAcc, true)
-          true -> calcSpaceWithinRow(remainingRow, mainAcc, subAcc, pairOpen)
-        end
-      # Standard pipes
+      # Open or close pipe pairs
       pairOpen and head == "|" -> calcSpaceWithinRow(rest, mainAcc + subAcc, 0, false)
       !pairOpen and head == "|" -> calcSpaceWithinRow(rest, mainAcc, subAcc, true)
       # Counting interior space
       pairOpen -> calcSpaceWithinRow(rest, mainAcc, subAcc + 1, true)
       # Nothing important
       true -> calcSpaceWithinRow(rest, mainAcc, subAcc, false)
-    end
-  end
-
-  # The gist of this is that pairs with the same vertical direction don't meaningfully change the topology on this row (F-7 and L-J)
-  # While opposite direction pairs act as if they're another "|" (F-J and L-7)
-  def countCornerPair(start, [head|rest]) do
-    cond do
-      start == "F" and head == "J" -> {true, rest}
-      start == "L" and head == "7" -> {true, rest}
-      start == "F" and head == "7" -> {false, rest}
-      start == "L" and head == "J" -> {false, rest}
-      true -> countCornerPair(start, rest)
     end
   end
 
@@ -230,7 +210,7 @@ end
 
 # Input
 
-rows = File.read!("input")
+rows = File.read!("testInput")
 |> String.split("\n", trim: true)
 |> Enum.with_index()
 |> Enum.map(&Util.createRow/1)
@@ -253,8 +233,17 @@ cleanGrid = Util.createEmptyGrid(tuple_size(grid), tuple_size(elem(grid, 0)))
 
 onlyPipe = Part2.drawPipe(start, {nil, nil}, grid, 0, cleanGrid)
 
-output = onlyPipe
+# The gist of this string replacing is that pairs of corners with the same vertical direction don't meaningfully change the topology on this row (F-7 and L-J)
+  # While opposite direction pairs act as if they're another "|" (F-J and L-7)
+betterPart2 = onlyPipe
+  |> Enum.map(fn x -> List.to_string(x) end)
+  |> Enum.map(&String.replace(&1, "-", ""))
+  |> Enum.map(&String.replace(&1, "FJ", "|"))
+  |> Enum.map(&String.replace(&1, "L7", "|"))
+  |> Enum.map(&String.replace(&1, "F7", ""))
+  |> Enum.map(&String.replace(&1, "LJ", ""))
+  |> Enum.map(&String.split(&1, "", trim: true))
   |> Enum.map(fn x -> Part2.calcSpaceWithinRow(x, 0, 0, false) end)
   |> Enum.sum()
 
-IO.inspect(output)
+IO.inspect(betterPart2, [])
