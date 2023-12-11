@@ -1,4 +1,6 @@
 defmodule Util do
+  # Change to "2" for Part 1
+  @multiplier 1000000
 
   def grid(inputFile) do
     inputFile
@@ -8,26 +10,18 @@ defmodule Util do
 
   def expandSpacetime(inputGrid) do
     # Expand cols
-    bigBang = List.first(inputGrid)
+    colSplosion = List.first(inputGrid)
     |> Enum.with_index()
     |> Enum.filter(fn {_char, idx} -> checkColAllSpace(idx, inputGrid) end)
     |> Enum.map(fn {_, idx} -> idx end)
-    |> Enum.reverse()
-    |> Enum.reduce(inputGrid, fn idx, acc ->
-      acc
-       |> Enum.map(fn row -> List.insert_at(row, idx, ".") end)
-    end)
 
     # Expand Rows
-    bigBang
+    rowSplosion = inputGrid
     |> Enum.with_index()
-    |> Enum.filter(fn {row, idx} -> Enum.all?(row, fn x -> x == "." end ) end)
+    |> Enum.filter(fn {row, idx} -> Enum.all?(row, fn x -> x == "." or x == "B" end ) end)
     |> Enum.map(fn {_, idx} -> idx end)
-    |> Enum.reverse()
-    |> Enum.reduce(bigBang, fn idx, acc ->
-      newRow = Enum.to_list(0..(Enum.count(List.first(bigBang)) - 1)) |> Enum.map(fn _ -> "." end)
-      List.insert_at(acc, idx, newRow)
-    end)
+
+    {rowSplosion, colSplosion}
   end
 
   def getGalaxies(inputGrid) do
@@ -41,51 +35,40 @@ defmodule Util do
     |> List.flatten()
   end
 
-  def calcDistances(galaxies) do
-    calcDistances(0, galaxies)
-  end
-  def calcDistances(acc, []) do
+  # Recurse through all Galaxy pairs while summing
+  def calcDistances(acc, [], _) do
     acc
   end
-  def calcDistances(acc, [galaxy|rest]) do
+  def calcDistances(acc, [galaxy|rest], gaps) do
     activeDists = Enum.map(rest, fn dest ->
-      getDist(galaxy, dest)
+      getDist(galaxy, dest, gaps)
     end)
     |> Enum.sum()
 
-    calcDistances(acc + activeDists, rest)
+    calcDistances(acc + activeDists, rest, gaps)
   end
 
-  defp getDist({_galA, rowA, colA}, {_galB, rowB, colB}) do
-    Kernel.abs(rowA - rowB) + Kernel.abs(colA - colB)
+  defp getDist({_galA, rowA, colA}, {_galB, rowB, colB}, {expansionRows, expansionCols}) do
+    rowGaps = expansionRows
+    |> Enum.filter(fn idx -> (idx < rowA and idx > rowB) or (idx > rowA and idx < rowB) end)
+    |> Enum.count
+
+    colGaps = expansionCols
+    |> Enum.filter(fn idx -> (idx < colA and idx > colB ) or (idx > colA and idx < colB ) end)
+    |> Enum.count
+
+    Kernel.abs(rowA - rowB) + Kernel.abs(colA - colB) + ((@multiplier - 1) * rowGaps) + ((@multiplier - 1) * colGaps)
   end
 
   defp checkColAllSpace(colIdx, inputGrid) do
     Enum.all?(inputGrid, fn row -> elem(Enum.fetch(row, colIdx),1) == "." end)
   end
-
 end
 
-defmodule Part1 do
-
-end
-
-defmodule Part2 do
-
-end
-
-galaxies = File.read!("input")
+space = File.read!("input")
   |> Util.grid()
-  |> Util.expandSpacetime()
-  |> Util.getGalaxies()
-
-output = Util.calcDistances(galaxies)
-
-
-# Part 1
-#output = Part1.followPipe(start, {nil, nil}, grid, 0)
+remnantsOfBigBang = Util.expandSpacetime(space)
+galaxies = Util.getGalaxies(space)
+output = Util.calcDistances(0, galaxies, remnantsOfBigBang)
 
 IO.inspect(output)
-
-
-# Part 2
