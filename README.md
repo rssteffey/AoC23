@@ -37,3 +37,10 @@ Due to never doing Elixir, I don't have great sense of what good practices or fo
     (That much benevolence in design feels wrong, so that may just be my sleep deprived brain misunderstanding how I got it right the first time)
 - Day 9
     - Recursion is fn
+- Day 10
+    - Part 1, easy peasy. Proud of my conditionless and confusing math for determining where a pipe leads (ie, `newCol = currCol + (currRow - oldRow)`)
+    - Part 2, slept on it, drove to church on it, did not listen to the sermon, and then rubber ducked to Alexandria in the car on the way home on and finally clicked a simple solution.  Took a while to implement because I am *bogged* down in some poor syntax choices. But also proud of the basic `|` pair counting algorithm
+    - Takeaways to improve
+        - My structure finally bit me bad.  Parts 1 and 2 blurred and got unwieldy by the end.  I can't find the balance between preserving my part1 history and not ending up with chunks of redundancy (because planning ahead to part 2 is near impossible when first making part 1)
+        - I think I should be using maps and atoms more.  The elem(elem(elem())) nesting is a marshy pit of despair by the time I get down in the lower levels of these 2D arrays
+        - Part1 represents the grid as a tuple of tuples since I wanted consistent indexing, but Part2 does the same via nested lists.  I *think* this is probably more expected since `List.replace_at` exists and lists feel more correct?  Still not entirely sure where the line should be if I have a known size object (like this grid)
