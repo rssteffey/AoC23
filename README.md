@@ -46,10 +46,10 @@ Due to never doing Elixir, I don't have great sense of what good practices or fo
     - Part1 represents the grid as a tuple of tuples since I wanted consistent indexing, but Part2 does the same via nested lists.  I *think* this is probably more expected since `List.replace_at` exists and lists feel more correct?  Still not entirely sure where the line should be if I have a known size object (like this grid)
 ### Day 11
 - My most Elixir-y solution yet.  Clean chains, no condition paths.  Maybe a tad off-track when generating the row and column expansion indices, but overall felt *great*.  Especially with such an easy switch to Part 2
-### Day 12
+### Day 12 \[INCOMPLETE\]
 - Part 1: I thought I was incredibly equipped to handle this one, given that I've made a nonogram solver (to aid with a nonogram generator) in the past. I remembered the key being to create combinations based on the potential blank spaces. Unfortunately I wasted entirely too much time trying to do pattern matching on the resulting tuples (this is Elixir, after all) before finally caving and just using a regex.
 - Part 2: Currently the part 2 to stump me most.  Clearly the naive approach isn't going to complete, and I don't have the slightest idea what the quick algorithm is to count valid arrangements
-### Day 13
+### Day 13 \[INCOMPLETE\]
 - Part 1: I'm Clever King reigning from Clever mountain. You others are fools. Counting up your reflection rows one by one. Binary checksums rool, everything else droolz
 - Part 2: Mr. Moron residing at 37 Moron Ct.  What am I even doing with my life?  Spending literal hours chasing an edge case in input data that I cannot possibly track down for the life of me.  For fun?  I'm stubborn enough to finish this one, just like I will Part 12 eventually.  But it may be the end of my 2023 AoC
 ### Day 14
