@@ -9,42 +9,24 @@ defmodule Util do
     |> Enum.map(fn row -> String.split(row, "", trim: true) end)
   end
 
-  def find_reflection_value(grid) do
-    IO.puts("Grid:")
-    IO.inspect(grid)
-    {rows, cols} = grid_to_checksums(grid)
-
-    IO.inspect({rows, cols})
-
-    #Should probably do this more dynamically, but I just want to be done
-    # Find all pairs in this list that are only a power of two apart
+  # Should probably do this more dynamically, but I just want to be done
+    # Find all pairs in this list that are only a power of two apart  (THIS WAS AN UNFORCED ERROR, PAST SHAWN)
     # generate a new list and calculate for each one
     # Use the smallest?
     # Use OG values as skips when re-running reflection
-
-    # TEST CASE DIFFERENT BY 8 AND 16 WHICH MEANS 8 WORKS
-
-    row_modifications = modify_rows(rows |> Enum.with_index(), [])
-    col_modifications = modify_rows(cols |> Enum.with_index(), [])
-
-    IO.puts("Mods:")
-    IO.inspect(row_modifications)
-    IO.inspect(col_modifications)
+  def find_reflection_value(grid) do
+    {rows, cols} = grid_to_checksums(grid)
 
     normal_row_val = start_reflection_value_from_sums(rows)
     normal_col_val = start_reflection_value_from_sums(cols)
 
-    IO.puts("Normal Sums:")
-    IO.inspect(normal_row_val, charlists: :as_lists)
-    IO.inspect(normal_col_val, charlists: :as_lists)
-
-    row_mod_sums = row_modifications
+    row_mod_sums = modify_rows(rows |> Enum.with_index(), [])
       |> Enum.map(fn val_change ->
         List.update_at(rows, Map.get(val_change, :change_index, nil), fn _x -> Map.get(val_change, :match_val, nil) end)
       end)
       |> Enum.map(fn new_grid -> start_reflection_value_from_sums(new_grid, normal_row_val) end)
 
-    col_mod_sums = col_modifications
+    col_mod_sums = modify_rows(cols |> Enum.with_index(), [])
       |> Enum.map(fn val_change ->
         List.update_at(cols, Map.get(val_change, :change_index, nil), fn _x -> Map.get(val_change, :match_val, nil) end)
       end)
@@ -52,31 +34,18 @@ defmodule Util do
         start_reflection_value_from_sums(new_grid, normal_col_val)
       end)
 
-    IO.puts("New Sums:")
-    IO.inspect(row_mod_sums, charlists: :as_lists)
-    IO.inspect(col_mod_sums, charlists: :as_lists)
-
-    IO.puts("Results:")
     row_res = row_mod_sums
-      |> Enum.min( fn -> 0 end)
-
+      |> Enum.min(fn -> 0 end)
     col_res = col_mod_sums
       |> Enum.min(fn -> 0 end)
 
-    IO.inspect({row_res, col_res})
-
-    output = cond do
-      #normal_row_val == Enum.count(grid) and normal_col_val == Enum.count(hd(grid)) -> 10000000000
-      #row_res == Enum.count(grid) and col_res == Enum.count(hd(grid)) -> 10000000000
+    cond do
       row_res == Enum.count(grid) -> col_res
       row_res == [] -> col_res
       row_res == nil -> col_res
       row_res == 0 -> col_res
       true -> row_res * 100
     end
-     IO.puts("Val:")
-    IO.inspect(output)
-    output
   end
 
   defp modify_rows([], acc) do
