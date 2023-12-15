@@ -14,7 +14,7 @@ defmodule Util do
     IO.inspect(grid)
     {rows, cols} = grid_to_checksums(grid)
 
-     IO.inspect({rows, cols})
+    IO.inspect({rows, cols})
 
     #Should probably do this more dynamically, but I just want to be done
     # Find all pairs in this list that are only a power of two apart
@@ -31,12 +31,8 @@ defmodule Util do
     IO.inspect(row_modifications)
     IO.inspect(col_modifications)
 
-    # It's late, I'm remapping the parity away here so I have to refactor minimal code
-    new_rows = rows |> Enum.map(fn {checksum, parity} -> checksum end)
-    new_cols = cols |> Enum.map(fn {checksum, parity} -> checksum end)
-
-    normal_row_val = start_reflection_value_from_sums(new_rows)
-    normal_col_val = start_reflection_value_from_sums(new_cols)
+    normal_row_val = start_reflection_value_from_sums(rows)
+    normal_col_val = start_reflection_value_from_sums(cols)
 
     IO.puts("Normal Sums:")
     IO.inspect(normal_row_val, charlists: :as_lists)
@@ -44,15 +40,17 @@ defmodule Util do
 
     row_mod_sums = row_modifications
       |> Enum.map(fn val_change ->
-        List.update_at(rows, Map.get(val_change, :change_index, nil), fn _x -> {Map.get(val_change, :match_val, nil), 1} end)
+        List.update_at(rows, Map.get(val_change, :change_index, nil), fn _x -> Map.get(val_change, :match_val, nil) end)
       end)
-      |> Enum.map(fn new_grid -> start_reflection_value_from_sums(new_grid |> Enum.map(fn {checksum, parity} -> checksum end), normal_row_val) end)
+      |> Enum.map(fn new_grid -> start_reflection_value_from_sums(new_grid, normal_row_val) end)
 
     col_mod_sums = col_modifications
       |> Enum.map(fn val_change ->
-        List.update_at(cols, Map.get(val_change, :change_index, nil), fn _x -> {Map.get(val_change, :match_val, nil), 1} end)
+        List.update_at(cols, Map.get(val_change, :change_index, nil), fn _x -> Map.get(val_change, :match_val, nil) end)
       end)
-      |> Enum.map(fn new_grid -> start_reflection_value_from_sums(new_grid |> Enum.map(fn {checksum, parity} -> checksum end), normal_col_val) end)
+      |> Enum.map(fn new_grid ->
+        start_reflection_value_from_sums(new_grid, normal_col_val)
+      end)
 
     IO.puts("New Sums:")
     IO.inspect(row_mod_sums, charlists: :as_lists)
@@ -84,10 +82,10 @@ defmodule Util do
   defp modify_rows([], acc) do
     acc
   end
-  defp modify_rows([{{checksum, parity}, idx}|remaining], acc) do
+  defp modify_rows([{checksum, idx}|remaining], acc) do
     rows = remaining
-      |> Enum.filter(fn {{sum, par}, _sum_idx} ->
-          Enum.any?(@powersOfTwo, fn x -> x == abs(checksum - sum) end) and abs(parity - par) == 1
+      |> Enum.filter(fn {sum, _sum_idx} ->
+          Enum.any?(@powersOfTwo, fn x -> x == Bitwise.bxor(checksum, sum)  end)
         end )
       |> Enum.map(fn {x, sum_idx} -> %{match_val: checksum, val_to_change: x, change_index: sum_idx} end)
 
@@ -96,7 +94,7 @@ defmodule Util do
 
   defp grid_to_checksums(grid) do
     row_sums = grid
-      |> Enum.map(fn row -> {list_to_sum(row), list_to_parity_bit(row)} end)
+      |> Enum.map(fn row -> list_to_sum(row) end)
 
     col_sums = Enum.to_list(0..(Enum.count(hd(grid)) - 1))
       |> Enum.map(fn col_index ->
@@ -104,7 +102,7 @@ defmodule Util do
           acc ++ [elem(Enum.fetch(row, col_index), 1)]
         end)
       end)
-      |> Enum.map(fn col -> {list_to_sum(col), list_to_parity_bit(col)} end)
+      |> Enum.map(fn col -> list_to_sum(col) end)
 
     {row_sums, col_sums}
   end
@@ -118,19 +116,6 @@ defmodule Util do
     end)
     |> Enum.reduce(<<>>, fn x, acc -> acc <> x end)
     |> String.to_integer(2)
-  end
-
-  def list_to_parity_bit(row) do
-    count = Enum.map(row, fn x ->
-      case x do
-        "#" -> "1"
-        "." -> "0"
-      end
-    end)
-    |> Enum.filter(fn x -> x == "1" end)
-    |> Enum.count()
-
-    count
   end
 
   def start_reflection_value_from_sums([next|remaining], exclusion_val \\ -1) do
