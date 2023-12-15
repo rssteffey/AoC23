@@ -55,3 +55,5 @@ Due to never doing Elixir, I don't have great sense of what good practices or fo
 ### Day 14
 - Part 1: Very fun (and now in lower_jamin_blood_pressure_format \[snake_case\])
 - Part 2: Despite still not completing Day 13 from whatever edge case I'm missing, I liked my checksums too much to abandon.  Using them here to keep my history list more human-readable. (Not fully, just *more*)
+### Day 15
+- So simple that I was paranoid the entire time
