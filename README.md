@@ -52,6 +52,7 @@ Due to never doing Elixir, I don't have great sense of what good practices or fo
 ### Day 13 \[INCOMPLETE\]
 - Part 1: I'm Clever King reigning from Clever mountain. You others are fools. Counting up your reflection rows one by one. Binary checksums rool, everything else droolz
 - Part 2: Mr. Moron residing at 37 Moron Ct.  What am I even doing with my life?  Spending literal hours chasing an edge case in input data that I cannot possibly track down for the life of me.  For fun?  I'm stubborn enough to finish this one, just like I will Part 12 eventually.  But it may be the end of my 2023 AoC
+- Part 2 Followup (12/15): Okay, this probably deserves it's own entire blog post, but this is the epitome of one bad assumption breaking everything.  I spent HOURS trying to find a test case that would fail, but my code worked every time except on the real input data.  Finally I found it.  I mistakenly thought `x - y == any_power_of_2` meant that only one bit was different between the two numbers.  This is VERY much not the case.  32 - 24 = 8 but those two input numbers have *very* different binary sequences.  Changed the comparison function to Bitwise XOR instead of subtraction and boom, instant 2nd star.
 ### Day 14
 - Part 1: Very fun (and now in lower_jamin_blood_pressure_format \[snake_case\])
 - Part 2: Despite still not completing Day 13 from whatever edge case I'm missing, I liked my checksums too much to abandon.  Using them here to keep my history list more human-readable. (Not fully, just *more*)
