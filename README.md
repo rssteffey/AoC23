@@ -49,7 +49,7 @@ Due to never doing Elixir, I don't have great sense of what good practices or fo
 ### Day 12 \[INCOMPLETE\]
 - Part 1: I thought I was incredibly equipped to handle this one, given that I've made a nonogram solver (to aid with a nonogram generator) in the past. I remembered the key being to create combinations based on the potential blank spaces. Unfortunately I wasted entirely too much time trying to do pattern matching on the resulting tuples (this is Elixir, after all) before finally caving and just using a regex.
 - Part 2: Currently the part 2 to stump me most.  Clearly the naive approach isn't going to complete, and I don't have the slightest idea what the quick algorithm is to count valid arrangements
-### Day 13 \[INCOMPLETE\]
+### Day 13
 - Part 1: I'm Clever King reigning from Clever mountain. You others are fools. Counting up your reflection rows one by one. Binary checksums rool, everything else droolz
 - Part 2: Mr. Moron residing at 37 Moron Ct.  What am I even doing with my life?  Spending literal hours chasing an edge case in input data that I cannot possibly track down for the life of me.  For fun?  I'm stubborn enough to finish this one, just like I will Part 12 eventually.  But it may be the end of my 2023 AoC
 - Part 2 Followup (12/15): Okay, this probably deserves it's own entire blog post, but this is the epitome of one bad assumption breaking everything.  I spent HOURS trying to find a test case that would fail, but my code worked every time except on the real input data.  Finally I found it.  I mistakenly thought `x - y == any_power_of_2` meant that only one bit was different between the two numbers.  This is VERY much not the case.  32 - 24 = 8 but those two input numbers have *very* different binary sequences.  Changed the comparison function to Bitwise XOR instead of subtraction and boom, instant 2nd star.
@@ -58,3 +58,9 @@ Due to never doing Elixir, I don't have great sense of what good practices or fo
 - Part 2: Despite still not completing Day 13 from whatever edge case I'm missing, I liked my checksums too much to abandon.  Using them here to keep my history list more human-readable. (Not fully, just *more*)
 ### Day 15
 - So simple that I was paranoid the entire time
+### Day 16 (late)
+-  I put this off because I expected it to be a pain, but honestly not bad.  Only my own code clutter really made this hard
+### Day 17 (tbd)
+- Looks like pathfinding, so we wait until after this hectic week
+### Day 18 (tbd)
+- Looks like I can use the same interior area trick from day 1? (barring whatever part 2 does with those edge colors) Tbd when I get around to this one
