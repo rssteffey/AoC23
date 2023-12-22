@@ -62,5 +62,6 @@ Due to never doing Elixir, I don't have great sense of what good practices or fo
 -  I put this off because I expected it to be a pain, but honestly not bad.  Only my own code clutter really made this hard
 ### Day 17 (tbd)
 - Looks like pathfinding, so we wait until after this hectic week
-### Day 18 (tbd)
-- Looks like I can use the same interior area trick from day 1? (barring whatever part 2 does with those edge colors) Tbd when I get around to this one
+### Day 18
+- Looks like I can use the same interior area trick from day 1? (barring whatever part 2 does with those edge colors) (Update from future Shawn, I could not)
+- Okay, this is why I adore this challenge.  The *perfect* story arc.  Part 1 makes me spend 100 lines clunkily putting together the naive solution of drawing and flood-filling. Part 2 forces me to consider that there is _no_ way I will be solving it brute force, so there must be something mathy I can do, and then after a day and a half of noodling I realize I'm re-inventing a very cumbersome and specific verion of calculus and then BOOM the output is there (or close enough to know the theory works).  I'm leaving Part 1's  code for the sheer absurdity of how simple Part 2 ended up (and is able to solve both halves)
